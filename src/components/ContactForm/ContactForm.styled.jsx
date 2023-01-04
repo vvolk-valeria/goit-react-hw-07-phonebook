@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import { Form, Field } from 'formik';
 
 export const FormContainer = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: rgb(29 107 125);
   box-shadow: 0px 0px 10px 5px rgba(146, 207, 235, 0.75);
   padding: 15px 10px;

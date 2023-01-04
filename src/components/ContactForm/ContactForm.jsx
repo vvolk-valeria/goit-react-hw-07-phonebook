@@ -10,9 +10,9 @@ import {
   ErrorInfo,
 } from './ContactForm.styled';
 
-import { getContacts } from '../../redux/selectors';
+import { selectContacts } from '../../redux/selectors';
 import toast, { Toaster } from 'react-hot-toast';
-import { addСontact } from '../../redux/contacsSlice';
+import { addContact } from '../../redux/operations';
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -35,13 +35,17 @@ const FormError = ({ name }) => {
 };
 
 export const ContactForm = () => {
-  const { contacts } = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = (value, { resetForm }) => {
-    const ContactValue = value.name.toLowerCase();
+    const ContactValue = value.name;
 
-    if (contacts.find(contact => contact.name.toLowerCase() === ContactValue)) {
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === ContactValue.toLowerCase()
+      )
+    ) {
       toast.error(`${ContactValue} is already in contacts.`);
       return;
     }
@@ -52,7 +56,7 @@ export const ContactForm = () => {
       number: value.number,
     };
 
-    dispatch(addСontact(newContact));
+    dispatch(addContact(newContact));
     resetForm();
   };
 

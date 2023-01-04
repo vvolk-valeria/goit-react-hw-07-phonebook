@@ -1,21 +1,24 @@
 import { ContainerList, Item, Btn } from './ContactList.styled';
-import { getContacts, getFilterValue } from '../../redux/selectors';
+import { selectContacts, selectFilterValue } from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteСontact } from '../../redux/contacsSlice';
+import { deleteContact } from '../../redux/operations';
+import toast from 'react-hot-toast';
 
 export const ContactList = () => {
-  const { contacts } = useSelector(getContacts);
   const dispatch = useDispatch();
-
-  const filter = useSelector(getFilterValue);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilterValue);
 
   const findContact = (array, query) => {
     const queryValue = query.toLowerCase();
-
     return array.filter(arr => arr.name.toLowerCase().includes(queryValue));
   };
 
   const items = findContact(contacts, filter);
+
+  if (items.length === 0 && filter) {
+    toast.error(`${filter} not found!`);
+  }
 
   return (
     <ContainerList>
@@ -23,8 +26,8 @@ export const ContactList = () => {
         return (
           <Item key={item.id}>
             <p>{item.name}</p>
-            <span>{item.number}</span>
-            <Btn type="button" onClick={() => dispatch(deleteСontact(item.id))}>
+            <span>{item.phone}</span>
+            <Btn type="button" onClick={() => dispatch(deleteContact(item.id))}>
               Delete
             </Btn>
           </Item>
