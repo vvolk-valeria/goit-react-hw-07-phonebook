@@ -1,13 +1,19 @@
 import { ContainerList, Item, Btn } from './ContactList.styled';
-import { selectContacts, selectFilterValue } from '../../redux/selectors';
+import {
+  selectContacts,
+  selectFilterValue,
+  selectError,
+} from '../../redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from '../../redux/operations';
+import { MessageError, MessageNoContacts } from '../Messages/Messages';
 import toast from 'react-hot-toast';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const filter = useSelector(selectFilterValue);
+  const error = useSelector(selectError);
 
   const findContact = (array, query) => {
     const queryValue = query.toLowerCase();
@@ -22,6 +28,7 @@ export const ContactList = () => {
 
   return (
     <ContainerList>
+      {items.length === 0 && !error && <MessageNoContacts />}
       {items.map(item => {
         return (
           <Item key={item.id}>
@@ -33,6 +40,7 @@ export const ContactList = () => {
           </Item>
         );
       })}
+      {error && <MessageError />}
     </ContainerList>
   );
 };

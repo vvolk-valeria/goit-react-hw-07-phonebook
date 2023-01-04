@@ -1,6 +1,5 @@
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'nanoid';
 import { Formik, ErrorMessage } from 'formik';
 import {
   FormContainer,
@@ -51,7 +50,6 @@ export const ContactForm = () => {
     }
 
     const newContact = {
-      id: 'id-' + nanoid(),
       name: value.name,
       number: value.number,
     };
